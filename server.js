@@ -2,6 +2,8 @@
 const Joi = require('joi')
 const Hapi = require('@hapi/hapi');
 const TodoController = require('./controllers/TodoController');
+const ProductController = require('./controllers/ProductController');
+const CategoryController = require('./controllers/CategoryController');
 const init = async () => {
 
     const server = Hapi.server({
@@ -49,9 +51,72 @@ const init = async () => {
         path: '/todo/{id}',
         handler: TodoController.todoDelete, 
     });
-    
+
+    /* product Route : */
+    server.route({
+        method: 'GET',  
+        path: '/product',
+        handler: ProductController.ProductList
+    });
+
+    server.route({
+        method: 'POST',  
+        path: '/product',
+        handler: ProductController.ProductStore
+    });
+
+    server.route({
+        method: 'GET',	
+        path: '/product/{id}',
+        handler: ProductController.ProductDetail, 
+    });
+
+    server.route({
+        method: 'PUT',	
+        path: '/product/{id}',
+        handler: ProductController.ProductUpdate, 
+    });
+
+    server.route({
+        method: 'DELETE',	
+        path: '/product/{id}',
+        handler: ProductController.ProductDelete, 
+    });
+
+    //----------End Product Route-------------//
 
 
+    /* Category Route : */
+    server.route({
+        method: 'GET',  
+        path: '/category',
+        handler: CategoryController.CategoryList
+    });
+
+    server.route({
+        method: 'POST',	
+        path: '/category',
+        handler: CategoryController.CategoryStore
+    });
+
+    server.route({
+        method: 'GET',  
+        path: '/category/{id}',
+        handler: CategoryController.CategoryDetail
+    });
+
+    server.route({
+        method: 'PUT',  
+        path: '/category/{id}',
+        handler: CategoryController.CategoryUpdate
+    });
+
+    server.route({
+        method: 'DELETE',  
+        path: '/category/{id}',
+        handler: CategoryController.CategoryDelete
+    });
+    //----------End Category Route-------------//
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

@@ -4,6 +4,7 @@ const Hapi = require('@hapi/hapi');
 const TodoController = require('./controllers/TodoController');
 const ProductController = require('./controllers/ProductController');
 const CategoryController = require('./controllers/CategoryController');
+const PersonController = require('./controllers/PersonController')
 const init = async () => {
 
     const server = Hapi.server({
@@ -62,13 +63,18 @@ const init = async () => {
     server.route({
         method: 'POST',  
         path: '/product',
-        handler: ProductController.ProductStore
+        handler: ProductController.ProductInsert
     });
 
     server.route({
         method: 'GET',	
         path: '/product/{id}',
         handler: ProductController.ProductDetail, 
+    });
+    server.route({
+        method: 'GET',	
+        path: '/product/page={page}',
+        handler: ProductController.ProductList, 
     });
 
     server.route({
@@ -117,7 +123,18 @@ const init = async () => {
         handler: CategoryController.CategoryDelete
     });
     //----------End Category Route-------------//
+    //--------------Persons Route--------------//
+    server.route({
+        method: 'GET',
+        path: '/person',
+        handler: PersonController.PersonList
+    });
 
+    server.route({
+        method: 'POST',	
+        path: '/insertgraph',
+        handler: PersonController.InsertGraph
+    });
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };

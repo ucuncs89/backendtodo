@@ -1,26 +1,33 @@
 const knex = require('../database/index')
 const { Model } = require('objection');
-const { Category } = require('../models/Category');
+const Category = require('../models/Category');
 
 Model.knex(knex);
 
 exports.CategoryList = async function(request, h){
-	const category = await Category.query();
-	if (category) {
-		return category
-	}else{
+	try {
+		const category = await Category.query();
+		return category;
+		// console.log(category);	
+	} catch (error) {
+		console.log(error)
 		return h.response({ message: 'Error Fetching' });
 	}
 }
 
 exports.CategoryDetail = async function(request, h){
 	const id = request.params.id;
-	const category = await Category.query().findById(id);
-	if (category) {
-		return category
-	}else{
-		return h.response({ message: 'Error Category Not Found' }).code(404);
+	try {
+		const category = await Category.query().findById(id).withGraphFetched('product');
+		if (category) {
+			return category
+		}else{
+			return h.response({ message: 'Error Category Not Found' }).code(404);
+		}	
+	} catch (error) {
+		console.log(error)		
 	}
+	
 }
 
 exports.CategoryStore = async function(request, h) {

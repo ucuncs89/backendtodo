@@ -12,7 +12,7 @@ exports.ProductList = async function(request, h){
 		if (product) {
 			return product
 		}else{
-			return h.response({ message: 'Error Product Not Found' }).code(404);
+			return h.response({ message: 'Error Product Not Fetching' }).code(404);
 		}
 	}catch(err){
 		console.log(err)

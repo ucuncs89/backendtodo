@@ -5,6 +5,8 @@ const TodoController = require('./controllers/TodoController');
 const ProductController = require('./controllers/ProductController');
 const CategoryController = require('./controllers/CategoryController');
 const PersonController = require('./controllers/PersonController')
+const CartController = require('./controllers/CartController')
+const OrderController = require('./controllers/OrderController')
 const init = async () => {
 
     const server = Hapi.server({
@@ -123,6 +125,55 @@ const init = async () => {
         handler: CategoryController.CategoryDelete
     });
     //----------End Category Route-------------//
+    //--------------Cart Route-----------------//
+    server.route({
+        method: 'GET',
+        path: '/cart',
+        handler: CartController.CartList
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/cart',
+        handler: CartController.CartAddNew
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/cart/{id}',
+        handler: CartController.CartDetail
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/cartdetail',
+        handler: CartController.CartDetailStore
+    });
+
+    server.route({
+        method: 'PUT',
+        path: '/cartdetail',
+        handler: CartController.CartDetailUpdate
+    });
+
+    server.route({
+        method: 'DELETE',
+        path: '/cartdetail',
+        handler: CartController.CartDetailRemove
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/checkout',
+        handler: CartController.CartCheckout
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/order',
+        handler: OrderController.OrderList
+    });
+    
     //--------------Persons Route--------------//
     server.route({
         method: 'GET',
